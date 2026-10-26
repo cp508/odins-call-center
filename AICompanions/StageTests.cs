@@ -19,6 +19,7 @@ namespace AICompanions
             DeathTests.Register();
             SkillsTests.Register();
             ProposalsDumpTests.Register();
+            StandTests.Register();
         }
     }
 }

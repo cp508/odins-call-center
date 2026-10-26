@@ -15,7 +15,7 @@ namespace AICompanions
     [BepInPlugin("com.aicompanions.valheim", "AICompanions", Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "0.6.0";
+        public const string Version = "0.7.0";
 
         public static ManualLogSource Log;
         public static Plugin Instance; // хост корутин для SelfTest.RunNow (горячая перезагрузка)

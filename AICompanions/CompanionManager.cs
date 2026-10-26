@@ -28,7 +28,9 @@ namespace AICompanions
             var player = Player.m_localPlayer;
             if (player == null) return null;
             var alive = Alive();
-            if (alive.Count >= Plugin.MaxCompanions.Value)
+            // Мёртвый в очереди возрождения — всё ещё боец отряда (строка в плашке, вернётся со своим цветом):
+            // занимает и место в лимите, и цвет. Иначе новый получал цвет мёртвого (снимок coord2_i1, 26.10).
+            if (alive.Count + CompanionDeath.Queue.Count >= Plugin.MaxCompanions.Value)
             {
                 player.Message(MessageHud.MessageType.TopLeft, "Лимит бойцов: " + Plugin.MaxCompanions.Value);
                 return null;
@@ -36,9 +38,10 @@ namespace AICompanions
             var tpl = CompanionFactory.GetTemplate();
             if (tpl == null) return null;
 
-            // Цвет уникален среди живых — первый свободный индекс палитры (9 цветов, ровно MaxCompanions).
+            // Цвет уникален среди живых и мёртвых в очереди — первый свободный индекс палитры (9 цветов, ровно MaxCompanions).
             var usedColors = new HashSet<int>();
             foreach (var a in alive) usedColors.Add(a.ColorIndex);
+            foreach (var p in CompanionDeath.Queue) usedColors.Add(p.ColorIndex);
             int colorIndex = 0;
             for (int i = 0; i < CompanionIdentity.Colors.Length; i++)
             {

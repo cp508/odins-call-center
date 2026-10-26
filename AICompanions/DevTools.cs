@@ -131,14 +131,15 @@ namespace AICompanions
         }
 
         // Клон: всегда полдень и ясно — ночью/в дождь Илья в окне клона ничего не видит (снимок 26.10 02:00).
-        // Один раз при входе: тест, которому нужна ночь/дождь (regen), ставит своё и возвращает.
-        private static void ForceDaylight()
+        // При входе и перед/после КАЖДОГО сценария (SelfTest.ResetArena): клон живёт часами без перезахода
+        // в мир, а тест, которому нужна ночь/дождь (regen), ставит своё внутри сценария.
+        public static void ForceDaylight()
         {
             if (EnvMan.instance == null) return;
             EnvMan.instance.m_debugTimeOfDay = true;
             EnvMan.instance.m_debugTime = 0.5f;
             EnvMan.instance.m_debugEnv = "Clear";
-            Plugin.Log.LogInfo("Клон: время зафиксировано на полдень, погода ясно");
+            if (!SelfTest.IsRunning) Plugin.Log.LogInfo("Клон: время зафиксировано на полдень, погода ясно");
         }
 
         private static void ApplyCloneView(Player player)
